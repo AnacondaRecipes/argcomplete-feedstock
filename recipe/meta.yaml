@@ -41,7 +41,9 @@ test:
   commands:
     - pip check
     - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
-    - python -m unittest test/test.py
+    - export COMP_TYPE=9  # [unix]
+    # [WINDOWS] AttributeError: module 'pexpect' has no attribute 'spawn'
+    - python -m unittest test/test.py  # [not win]
     - activate-global-python-argcomplete --help
     - register-python-argcomplete --help
     # no --help/-h option
