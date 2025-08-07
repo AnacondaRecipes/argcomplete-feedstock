@@ -1,43 +1,57 @@
-{% set version = "1.12.3" %}
+{% set name = "argcomplete" %}
+{% set version = "3.6.2" %}
 
 package:
-  name: argcomplete
+  name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  fn: argcomplete-{{ version }}.tar.gz
-  url: https://pypi.io/packages/source/a/argcomplete/argcomplete-{{ version }}.tar.gz
-  md5: ded03f9c5d41c193dfe5869634d78211
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  sha256: d0519b1bc867f5f4f4713c41ad0aba73a4a5f007449716b16f385f2166dc6adf
 
 build:
   number: 0
-  script: {{ PYTHON }} -m pip install . --no-deps -vv
-  noarch: python
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  skip: true  # [py<38]
+  entry_points:
+    - activate-global-python-argcomplete = argcomplete.scripts.activate_global_python_argcomplete:main
+    - python-argcomplete-check-easy-install-script = argcomplete.scripts.python_argcomplete_check_easy_install_script:main
+    - register-python-argcomplete = argcomplete.scripts.register_python_argcomplete:main
 
 requirements:
   host:
-    - python >=3.5
-    - setuptools
+    - python
     - pip
+    - hatchling
+    - hatch-vcs
   run:
-    - python >=3.5
-    - importlib_metadata >=0.23,<5
+    - python
 
 test:
+  imports:
+    - argcomplete
+    - argcomplete.completers
+    - argcomplete.io
+    - argcomplete.lexers
   requires:
     - pip
   commands:
     - pip check
-  imports:
-    - argcomplete
+    - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
+    - activate-global-python-argcomplete --help
+    - register-python-argcomplete --help
+    # FileNotFoundError: [Errno 2] No such file or directory: '--help'
+    # - python-argcomplete-check-easy-install-script  --help
+    # Skip upstream tests due to numerous platform-specific issues they cannot be run with pytest so difficult to exclude by test or file.
 
 about:
   home: https://github.com/kislyuk/argcomplete
   license: Apache-2.0
-  summary: Bash tab completion for argparse
   license_family: Apache
   license_file: LICENSE.rst
-  doc_url: https://argcomplete.readthedocs.io
+  summary: Argcomplete provides easy, extensible command line tab completion of arguments for your Python application.
+  description: Argcomplete provides easy, extensible command line tab completion of arguments for your Python application.
+  doc_url: https://kislyuk.github.io/argcomplete
   dev_url: https://github.com/kislyuk/argcomplete
 
 extra:
