@@ -38,6 +38,10 @@ test:
   commands:
     - pip check
     - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
+    - activate-global-python-argcomplete --help
+    - register-python-argcomplete --help
+    # FileNotFoundError: [Errno 2] No such file or directory: '--help'
+    # - python-argcomplete-check-easy-install-script  --help
     # Skip upstream tests due to numerous platform-specific issues they cannot be run with pytest so difficult to exclude by test or file.
 
 about:
