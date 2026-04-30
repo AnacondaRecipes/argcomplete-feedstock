@@ -2,3 +2,4 @@ anaconda_config_version: 1
 upstream_sources:
   - pypi:
       identifier: argcomplete
+      include_regex: ^3\.5\.3(?:[a-z][a-z0-9]*)?$
