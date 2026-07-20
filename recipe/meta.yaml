@@ -1,5 +1,5 @@
 {% set name = "argcomplete" %}
-{% set version = "3.6.2" %}
+{% set version = "3.7.0" %}
 
 package:
   name: {{ name|lower }}
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: d0519b1bc867f5f4f4713c41ad0aba73a4a5f007449716b16f385f2166dc6adf
+  sha256: afde224f753f874807b1dc1414e883ab8fe0cda9c04807b6047dcb8e1ac23913
 
 build:
   number: 0
@@ -15,7 +15,6 @@ build:
   skip: true  # [py<38]
   entry_points:
     - activate-global-python-argcomplete = argcomplete.scripts.activate_global_python_argcomplete:main
-    - python-argcomplete-check-easy-install-script = argcomplete.scripts.python_argcomplete_check_easy_install_script:main
     - register-python-argcomplete = argcomplete.scripts.register_python_argcomplete:main
 
 requirements:
@@ -40,8 +39,6 @@ test:
     - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
     - activate-global-python-argcomplete --help
     - register-python-argcomplete --help
-    # FileNotFoundError: [Errno 2] No such file or directory: '--help'
-    # - python-argcomplete-check-easy-install-script  --help
     # Skip upstream tests due to numerous platform-specific issues they cannot be run with pytest so difficult to exclude by test or file.
 
 about:
