@@ -1,18 +1,18 @@
 {% set name = "argcomplete" %}
-{% set version = "3.7.0" %}
+{% set version = "3.7.2" %}
 
 package:
-  name: {{ name|lower }}
+  name: {{ name }}
   version: {{ version }}
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: afde224f753f874807b1dc1414e883ab8fe0cda9c04807b6047dcb8e1ac23913
+  sha256: aad8b69a0b9969edb62db0d1752354c0d50717b10e0cbb00e2a958381b9fc6b9
 
 build:
   number: 0
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
-  skip: true  # [py<38]
+  skip: true  # [py<310]
   entry_points:
     - activate-global-python-argcomplete = argcomplete.scripts.activate_global_python_argcomplete:main
     - register-python-argcomplete = argcomplete.scripts.register_python_argcomplete:main
